@@ -18,6 +18,11 @@ https://storage.googleapis.com/doc-agent-buck-1/temp/haha.pdf
 txt, md, png, jpeg, pdf, csv, xlsx, pptx, docx, pkl ...
 ```
 
+## Docker container py runtime build script with container name(mandatory)
+```bash
+docker build -t py-runtime .
+```
+
 ## meta data
 - pdf compression: Ghostscript
 - image cocompression: pillow
