@@ -19,6 +19,7 @@ from app.tools import (
     convert_file_format,
     compress_file,
     generate_plot,
+    fallback_tool,
 )
 from app.schemas import (
     SummarizeInput,
@@ -28,10 +29,11 @@ from app.schemas import (
     FileConvertInput,
     FileCompressionInput,
     PlotInput,
+    FallbackInput,
 )
 
 # --- MCP Server Setup ---
-app = Server("simple-mcp-demo")
+app = Server("doc-util-agent-tools-mcp")
 
 
 @app.list_tools()
@@ -206,6 +208,27 @@ async def list_tools() -> list[types.Tool]:
                 },
             },
         ),
+        types.Tool(
+            name="fallback_tool",
+            description=(
+                "Attempts to solve the tasks which can not be done or is not applicable for the other present tools"
+                "Use this ONLY when no other specialized tool applies."
+            ),
+            inputSchema={
+                "type": "object",
+                "required": ["prompt"],
+                "properties": {
+                    "prompt": {
+                        "type": "string",
+                        "minLength": 10,
+                        "maxLength": 8000,
+                        "description": (
+                            "task or reformulated subtask prompt in natural language that should be handled by the fallback mechanism."
+                        ),
+                    }
+                },
+            },
+        ),
     ]
 
 
@@ -267,6 +290,13 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
             result = await generate_plot(validated_input)
         except Exception as e:
             raise ValueError(f"Tool 'generate_plot' failed: {e}")
+
+    elif name == "fallback_tool":
+        try:
+            validated_input = FallbackInput(**arguments)
+            result = await fallback_tool(validated_input)
+        except Exception as e:
+            raise ValueError(f"Tool 'fallback' failed: {e}")
 
     else:
         raise ValueError(f"Unknown tool: {name}")

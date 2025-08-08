@@ -17,9 +17,9 @@ def get_gemini_llm() -> ChatGoogleGenerativeAI:
     try:
         logger.info("[⚙️] Instantiating Gemini LLM...")
         llm = ChatGoogleGenerativeAI(
-            model="gemini-2.0-flash",
+            model="gemini-2.5-flash",
             temperature=0.3,
-            timeout=15,
+            timeout=10,
             max_retries=2,
             api_key=os.getenv("GOOGLE_API_KEY"),
         )
