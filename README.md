@@ -20,6 +20,12 @@ https://storage.googleapis.com/doc-agent-buck-1/temp/haha.pdf
 txt, md, png, jpeg, pdf, csv, xlsx, pptx, docx, pkl ...
 ```
 
+## Docker container py runtime build script with container name(mandatory)
+
+```bash
+docker build -t py-runtime .
+```
+
 ## meta data
 
 - pdf compression: Ghostscript
@@ -39,11 +45,13 @@ txt, md, png, jpeg, pdf, csv, xlsx, pptx, docx, pkl ...
 
 - use `pydantic` schema for tool desc in main file for clear non repeated code
 
+- Add more tools as required
+
+- fix bugs and file `ext` extracttion logic for presigned urls
+
 - Sync your server clock with NTP:
 
 ```bash
 sudo timedatectl set-ntp true
 On Docker containers, ensure the container inherits the host time.
 ```
-
-- Add more tools required
