@@ -336,7 +336,10 @@ async def convert_file_format(input_data: FileConvertInput) -> str:
     """
     Dispatcher function that routes to the correct converter based on input/output format.
     """
-    key = (input_data.input_format.lower(), input_data.output_format.lower())
+    key = (
+        input_data.input_format.lower().lstrip("."),
+        input_data.output_format.lower().lstrip("."),
+    )
     handler = conversion_map.get(key)
 
     if handler is None:
@@ -363,7 +366,7 @@ if __name__ == "__main__":
                 output_format="xlsx",
             )
         )
-        
+
         print(f"✅ conversed successfully url : {conv_url}")
 
     asyncio.run(test())

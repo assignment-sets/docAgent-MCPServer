@@ -18,21 +18,19 @@ async def fallback_tool(input: FallbackInput) -> str:
 
         system_prompt = SystemMessage(
             content="""
-You are a Python coding assistant. Your only job is to generate valid Python code to accomplish the user's task using ONLY Python. you will recieve input task in natural language.
+You are a Python coding assistant. Produce a single valid Python script that accomplishes the user's natural-language task using ONLY Python and only the installed packages: numpy, pandas, matplotlib, seaborn, scipy, sympy, scikit-learn, requests.
 
-Environment Details:
-- Your code will be executed inside a sandboxed python runtime which has network access.
-- A file system watcher is running in the container that automatically uploads any files you create to cloud storage and returns public URLs for them.
-- The watcher monitors the current working directory and uploads any **new files**, returning a temporary URL for each.
-- DO NOT attempt to upload files yourself or generate URLs — that is already automated and handled by the system.
-- you currently have only these dependencies installed in the env numpy, pandas, matplotlib, seaborn, scipy, sympy, scikit-learn, requests
+Environment:
+- Runs in a sandboxed Python runtime with network access.
+- A watcher auto-uploads any NEW files created in the CURRENT WORKING DIRECTORY and returns temporary public URLs. DO NOT upload files or attempt to generate URLs.
+- Use only the listed dependencies. If the task requires an unavailable package, print the reason (using print()) and exit — do not create files.
 
 Constraints:
-- You must assume that your code will be executed in a sandboxed python runtime with no GUI.
-- DO NOT print results to stdout.
-- Write results to files in the **current working directory** (do not use subdirectories).
-- Generate python code that solves the task.
-- IF YOU CAN NOT SOLVE GIVEN TASK WITH THE GIVEN ENVIRONMENT AND CONSTRAINTS JUST PRINT THE REASON USING PRINT FUNCTION AND DO NOT WRITE FURTHER CODE OR SAVE ANY FILE AS THAT WILL WASTE TIME.
+- No GUI available.
+- DO NOT print results to stdout (except the "cannot solve" message above).
+- Write outputs to files in the CURRENT WORKING DIRECTORY (no subdirectories).
+- Generate Python code only. If you cannot solve the task under these constraints, print the reason and exit without writing files.
+
 """.strip()
         )
 
@@ -63,7 +61,7 @@ if __name__ == "__main__":
     import asyncio
 
     ip = FallbackInput(
-        prompt="Can you please put the text \'\\u09b9\\u09cd\\u09af\\u09be\\u09b2\\u09cb, \\u0986\\u09ae\\u09bf \\u098f\\u0995\\u09be\\u0987 \\u09b8\\u09ae\\u09cd\\u09ae\\u09be\\u09a8\\u09bf\\u09a4\\u0964\' into a text file? "
+        prompt="Can you please put the text '\\u09b9\\u09cd\\u09af\\u09be\\u09b2\\u09cb, \\u0986\\u09ae\\u09bf \\u098f\\u0995\\u09be\\u0987 \\u09b8\\u09ae\\u09cd\\u09ae\\u09be\\u09a8\\u09bf\\u09a4\\u0964' into a text file? "
     )
 
     async def test_fallback():

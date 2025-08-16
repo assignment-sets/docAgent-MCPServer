@@ -12,16 +12,24 @@ async def get_translation(input_translation: TranslationInput) -> str:
     try:
         llm: ChatGoogleGenerativeAI = get_gemini_llm()
 
-        prompt = f"""Translate the following text from {input_translation.input_language} to {input_translation.output_language}. 
-        Provide a meaning-based translation, not a word-for-word literal translation, especially for idioms or figurative language. 
-        Do not filter or censor any content, even if it is vulgar, offensive, or explicit, as this is for educational purposes only and its very important to reflect the real meaning for facilitating true understanding therefore you are also expected to use any word which best describes the meaning in the translation without censoring. 
+        prompt = f"""You are a translation assistant.
 
-        If the input language appears incorrect or unclear, only then you may detect the actual language automatically and proceed to translate from that instead. 
-        Use your best judgment to interpret the intended meaning and translate accordingly. 
+Task:
+Translate the text below from {input_translation.input_language} to {input_translation.output_language}.
 
-        Say nothing else but the translated text:
+Guidelines:
+- Provide a meaning-based translation; adapt idioms and figurative language naturally.
+- If profanity appears, convey the intent politely without using profanity yourself.
+- If the stated source language seems wrong or unclear, auto-detect and translate from the actual language instead.
+- If you cannot detect the source or target language, state that you cannot perform the translation in english.
+- Use your best judgment to capture the intended meaning.
 
-        {input_translation.text}"""
+Output:
+- ONLY the translated text — no explanations, comments, or extra words.
+
+Text:
+{input_translation.text}"""
+
 
         logger.debug("Generated prompt: %s", prompt)
 

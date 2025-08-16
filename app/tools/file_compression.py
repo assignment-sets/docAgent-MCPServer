@@ -91,11 +91,10 @@ EXTENSION_COMPRESSION_MAP: dict[str, Callable[[FileCompressionInput], bytes]] = 
 
 async def compress_file(input_data: FileCompressionInput) -> str:
     """
-    Determines file type from URL extension and dispatches to the correct compression function.
+    Uses provided file_type to dispatch to the correct compression function.
     """
     try:
-        _, ext = os.path.splitext(str(input_data.file_url))
-        ext = ext.lower().lstrip(".")
+        ext = input_data.file_type.lower().lstrip(".")
 
         if ext in EXTENSION_COMPRESSION_MAP:
             compress_func = EXTENSION_COMPRESSION_MAP[ext]
@@ -107,7 +106,7 @@ async def compress_file(input_data: FileCompressionInput) -> str:
                 compressed_bytes,
             )
         else:
-            logger.warning(f"Unsupported file extension: .{ext}")
+            logger.warning(f"Unsupported file type: .{ext}")
             raise ValueError(f"Unsupported file type: .{ext}")
 
     except Exception as e:
@@ -127,12 +126,10 @@ if __name__ == "__main__":
     input_pdf = FileCompressionInput(file_url=test_pdf_url)
 
     async def test():
-        
         img_url = await compress_file(input_image)
         pdf_url = await compress_file(input_pdf)
-        
-        print(img_url)        
-        print(pdf_url)        
 
+        print(img_url)
+        print(pdf_url)
 
     asyncio.run(test())

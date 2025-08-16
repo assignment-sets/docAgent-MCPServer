@@ -94,7 +94,11 @@ async def list_tools() -> list[types.Tool]:
                         "type": "string",
                         "format": "uri",
                         "description": "Public or signed URL to the file or image",
-                    }
+                    },
+                    "file_type": {
+                        "type": "string",
+                        "description": "File extension or type (e.g., 'pdf', 'png', 'docx')",
+                    },
                 },
             },
         ),
@@ -162,15 +166,19 @@ async def list_tools() -> list[types.Tool]:
                         "type": "string",
                         "format": "uri",
                         "description": "Public or signed URL to the file",
-                    }
+                    },
+                    "file_type": {
+                        "type": "string",
+                        "description": "File extension (e.g., 'pdf', 'png', 'jpg')",
+                    },
                 },
             },
         ),
         types.Tool(
             name="generate_plot",
             description=(
-                "Generates a plot image url (e.g. scatter, line, bar, heatmap, etc.) from only an XLSX file URL and no other input format "
-                "Supports various plot types like scatter, bar, histogram, heatmap, etc. "
+                "Generates a plot image url"
+                "Supports plot types like scatter, bar, histogram, heatmap, boxplot, line."
                 "Optional x_column and y_column can be specified depending on the plot type."
             ),
             inputSchema={

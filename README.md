@@ -1,4 +1,5 @@
 ## sample urls to test
+
 ```bash
 https://storage.googleapis.com/doc-agent-buck-1/temp/hehe.txt
 https://storage.googleapis.com/doc-agent-buck-1/temp/haha.md
@@ -13,16 +14,19 @@ https://storage.googleapis.com/doc-agent-buck-1/temp/converted.pdf
 https://storage.googleapis.com/doc-agent-buck-1/temp/haha.pdf
 ```
 
-## handled types 
+## handled types
+
 ```bash
 txt, md, png, jpeg, pdf, csv, xlsx, pptx, docx, pkl ...
 ```
 
 ## meta data
+
 - pdf compression: Ghostscript
 - image cocompression: pillow
 
-### conversions: 
+### conversions:
+
 - docx -> pdf : spire-doc
 - csv -> xlsx -> pdf : spire-xls
 - pptx -> pdf : Spire.Presentation
@@ -32,5 +36,14 @@ txt, md, png, jpeg, pdf, csv, xlsx, pptx, docx, pkl ...
 - pdf -> xlsx: spire.pdf
 
 ## TODO:
+
 - use `pydantic` schema for tool desc in main file for clear non repeated code
-- fix bugs and file `ext` extracttion logic for presigned urls
+
+- Sync your server clock with NTP:
+
+```bash
+sudo timedatectl set-ntp true
+On Docker containers, ensure the container inherits the host time.
+```
+
+- Add more tools required

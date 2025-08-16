@@ -247,19 +247,17 @@ EXTENSION_HANDLER_MAP: dict[str, Callable[[FileExtractInput], str]] = {
 
 async def extract_text(input_data: FileExtractInput) -> str:
     """
-    Determines file type from URL extension and delegates to the appropriate text extraction function.
+    Uses provided file_type to select the correct extractor
     """
     try:
-        # Extract file extension
-        _, ext = os.path.splitext(str(input_data.file_url))
-        ext = ext.lower().lstrip(".")
+        ext = input_data.file_type.lower().lstrip(".")  # clean 'pdf' or '.pdf'
 
         if ext in EXTENSION_HANDLER_MAP:
             extractor_func = EXTENSION_HANDLER_MAP[ext]
             logger.info(f"Dispatching to extractor for .{ext} file.")
             return await extractor_func(input_data)
         else:
-            logger.warning(f"Unsupported file extension: .{ext}")
+            logger.warning(f"Unsupported file type: .{ext}")
             raise ValueError(f"Unsupported file type: .{ext}")
 
     except Exception as e:
