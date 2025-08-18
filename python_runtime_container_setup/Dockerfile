@@ -22,7 +22,15 @@ RUN pip install --no-cache-dir \
     watchdog \
     boto3 \
     python-dotenv \
-    requests
+    requests \
+    # --- Pandas I/O + extras ---
+    python-dateutil \
+    pytz \
+    tzdata \
+    openpyxl \
+    xlrd \
+    xlsxwriter \
+    pyarrow
 
 COPY watcher.py /app/watcher.py
 COPY entrypoint.sh /app/entrypoint.sh
